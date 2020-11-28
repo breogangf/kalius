@@ -1,0 +1,22 @@
+{
+  "name": "kalius",
+  "version": "1.0.0",
+  "description": "Discord bot for Braisgfroom",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/breogangf/kalius.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/breogangf/kalius/issues"
+  },
+  "homepage": "https://github.com/breogangf/kalius#readme",
+  "dependencies": {
+    "discord.js": "^12.5.1"
+  }
+}
