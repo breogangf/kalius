@@ -1,8 +1,8 @@
 'use strict'
 const { DISCORD_TOKEN, DISCORD_CHANNEL_NAME, GUILD, QUESTIONS } = require('./constants')
 const { retrieveRolByName } = require('./helpers')
-const Discord = require('discord.js')
-const client = new Discord.Client()
+const { Client, MessageEmbed } = require('discord.js')
+const client = new Client()
 
 const applying = []
 
@@ -14,8 +14,8 @@ client.on("message", async message => {
 
     if (message.author.bot) return
 
-    if (message.content.toLowerCase() === "!comenzar") {
-        // if (applying.includes(message.author.id)) return
+    if (message.content.toString().toLowerCase() === "!comenzar") {
+        if (applying.includes(message.author.id)) return
 
         try {
             console.log(`${message.author.tag} began applying.`)
@@ -50,7 +50,7 @@ client.on("message", async message => {
                             default:
                                 break;
                         }
-                        if (collected.first().content.toLowerCase() === "#cancel") {
+                        if (collected.first().content.toLowerCase() === "!cancelar") {
                             await message.channel.send(":x: **Nos vemos en otra ocasión.**")
                             applying.splice(applying.indexOf(message.author.id), 1)
                             cancel = true
@@ -62,6 +62,7 @@ client.on("message", async message => {
                         cancel = true
                         console.log(`${message.author.tag} let their application time out.`)
                     })
+                    if (cancel) return
             }
 
             //Add role
@@ -78,8 +79,22 @@ client.on("message", async message => {
             }
 
             await message.channel.send(welcomeMessage)
+            await message.channel.send('Ahora puedes ir al servidor y saludar a tus nuevos compañer@s de aventuras!')
+
             const channel = client.channels.cache.find(channel => channel.name === DISCORD_CHANNEL_NAME)
-            await channel.send(`${JSON.stringify(profile)}\n`)
+
+            const embed = new MessageEmbed()
+                .setTitle('Nuevo miembro, podéis saludarle 👋')
+                .setAuthor(`@${message.author.username}`, message.author.avatarURL())
+                .setColor(0x00AE86)
+                .addFields(
+                    {
+                        name: "Su perfil:",
+                        value: `* Nombre: ${profile.name}\n * Edad: ${profile.age}\n * Ciudad: ${profile.location}\n * Rol: ${profile.role}\n`,
+                        inline: true
+                    });
+
+            await channel.send(embed)
 
             console.log(`${message.author.tag} finished applying.`)
         } catch (err) {
