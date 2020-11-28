@@ -15,7 +15,7 @@ client.on("message", async message => {
     if (message.author.bot) return
 
     if (message.content.toLowerCase() === "!comenzar") {
-        if (applying.includes(message.author.id)) return
+        // if (applying.includes(message.author.id)) return
 
         try {
             console.log(`${message.author.tag} began applying.`)
@@ -64,16 +64,22 @@ client.on("message", async message => {
                     })
             }
 
-            await message.channel.send(":thumbsup: **Bienvenid@!**")
+            //Add role
+            const _role = profile.role.toString().toLowerCase();
+            let welcomeMessage = ':thumbsup: **Bienvenid@!**'
+            if (_role.replace('á', 'a') === 'master') {
+                client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('MASTER'))
+            } else if (_role === 'jugador') {
+                client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('PLAYER'))
+            } else {
+                client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('VILLAGER'))
+                welcomeMessage = `:thumbsup: **Bienvenid@!**, como no he entendido el rol **${_role}**, te he asignado el de **Aldeano**`
+                profile.role = 'Aldeano'
+            }
+
+            await message.channel.send(welcomeMessage)
             const channel = client.channels.cache.find(channel => channel.name === DISCORD_CHANNEL_NAME)
             await channel.send(`${JSON.stringify(profile)}\n`)
-
-            //Add role
-            if (profile.role === 'master') {
-                client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('MASTER'))
-            } else if (profile.role === 'jugador') {
-                client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('PLAYER'))
-            }
 
             console.log(`${message.author.tag} finished applying.`)
         } catch (err) {
@@ -87,7 +93,10 @@ client.on('guildMemberAdd', async member => {
     const channel = member.guild.channels.cache.find(ch => ch.name === DISCORD_CHANNEL_NAME)
     if (!channel) return
     console.log(`Welcome to the server, ${JSON.stringify(member)}`)
-    member.send(`Bienvenido a nuestra taberna, aventurero! Soy Kalius, el observador.\n Contéstame a unas preguntas y te daré a conocer a nuestros miembros!`)
+    member.send(`Bienvenido a nuestra taberna, aventurero! Soy Kalius, el observador 👀`)
+    member.send(`Contéstame a unas preguntas y te daré a conocer a nuestros miembros!`)
+    member.send(`Escribe **!comenzar** cuando estés listo :thumbsup:`)
+
     //console.log(channel.guild.roles)
 })
 
