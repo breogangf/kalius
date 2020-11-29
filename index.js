@@ -1,5 +1,5 @@
 'use strict'
-const { DISCORD_TOKEN, DISCORD_CHANNEL_NAME, GUILD, QUESTIONS } = require('./constants')
+const { DISCORD_CHANNEL_NAME, GUILD, QUESTIONS } = require('./constants')
 const { retrieveRolByName } = require('./helpers')
 const { Client, MessageEmbed } = require('discord.js')
 const client = new Client()
@@ -115,4 +115,4 @@ client.on('guildMemberAdd', async member => {
     //console.log(channel.guild.roles)
 })
 
-client.login(DISCORD_TOKEN)
+client.login()
