@@ -74,7 +74,7 @@ client.on("message", async message => {
                 client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('PLAYER'))
             } else {
                 client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('VILLAGER'))
-                welcomeMessage = `:thumbsup: **Bienvenid@!**, como no he entendido el rol **${_role}**, te he asignado el de **Aldeano**`
+                welcomeMessage = `:thumbsup: **Bienvenid@!**, como no he entendido el rol **${_role}**, te he asignado el de **Aldeano**. Si quieres cambiarlo, habla con **El Tabernero**`
                 profile.role = 'Aldeano'
             }
 
