@@ -62,7 +62,7 @@ client.on("message", async message => {
                         cancel = true
                         console.log(`${message.author.tag} let their application time out.`)
                     })
-                    if (cancel) return
+                if (cancel) return
             }
 
             //Add role
@@ -71,6 +71,9 @@ client.on("message", async message => {
             if (_role.replace('á', 'a') === 'master') {
                 client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('MASTER'))
             } else if (_role === 'jugador') {
+                client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('PLAYER'))
+            } else if (_role === 'ambos') {
+                client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('MASTER'))
                 client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('PLAYER'))
             } else {
                 client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('VILLAGER'))

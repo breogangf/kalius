@@ -3,6 +3,6 @@ exports.QUESTIONS = [
     "Cuál es tu nombre?",
     "Cuántos años tienes?",
     "De dónde eres?",
-    "Eres máster o jugador?"
+    "Eres máster, jugador o ambos?"
 ]
 exports.GUILD = '781602303601672233'
