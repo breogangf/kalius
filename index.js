@@ -108,7 +108,7 @@ client.on('guildMemberAdd', async member => {
     const channel = member.guild.channels.cache.find(ch => ch.name === DISCORD_CHANNEL_NAME)
     if (!channel) return
     console.log(`Welcome to the server, ${JSON.stringify(member)}`)
-    member.send(`Bienvenido a nuestra taberna, aventurero! Soy Kalius, el observador 👀`)
+    member.send(`Bienvenido a **La Taberna de Braisgf**, aventurero! Soy Kalius, el observador 👀`)
     member.send(`Contéstame a unas preguntas y te daré a conocer a nuestros miembros!`)
     member.send(`Escribe **!comenzar** cuando estés listo :thumbsup:`)
 
