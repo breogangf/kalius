@@ -1,10 +1,19 @@
 'use strict'
-const { DISCORD_CHANNEL_NAME, GUILD, QUESTIONS } = require('./constants')
+const { QUESTIONS } = require('./constants')
 const { retrieveRolByName } = require('./helpers')
 const { Client, MessageEmbed } = require('discord.js')
+const mongoose = require('mongoose')
 const client = new Client()
+const { _app, mongo } = require('./config')
 
 const applying = []
+
+const mongodbURL = `mongodb+srv://${mongo.user}:${mongo.password}@${mongo.uri}/${mongo.db}?retryWrites=true&w=majority`
+
+mongoose.connect(mongodbURL, { useNewUrlParser: true, useUnifiedTopology: true }, (err, res) => {
+    if (err) throw err
+    console.log('Connected to Database: ' + mongo.db)
+})
 
 client.on('ready', () => {
     console.log('I am ready!')
@@ -69,14 +78,14 @@ client.on("message", async message => {
             const _role = profile.role.toString().toLowerCase();
             let welcomeMessage = ':thumbsup: **Bienvenid@!**'
             if (_role.replace('á', 'a') === 'master') {
-                client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('MASTER'))
+                client.guilds.cache.get(_app.GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('MASTER'))
             } else if (_role === 'jugador') {
-                client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('PLAYER'))
+                client.guilds.cache.get(_app.GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('PLAYER'))
             } else if (_role === 'ambos') {
-                client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('MASTER'))
-                client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('PLAYER'))
+                client.guilds.cache.get(_app.GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('MASTER'))
+                client.guilds.cache.get(_app.GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('PLAYER'))
             } else {
-                client.guilds.cache.get(GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('VILLAGER'))
+                client.guilds.cache.get(_app.GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('VILLAGER'))
                 welcomeMessage = `:thumbsup: **Bienvenid@!**, como no he entendido el rol **${_role}**, te he asignado el de **Aldeano**. Si quieres cambiarlo, habla con **El Tabernero**`
                 profile.role = 'Aldeano'
             }
@@ -84,7 +93,7 @@ client.on("message", async message => {
             await message.channel.send(welcomeMessage)
             await message.channel.send('Ahora puedes ir al servidor y saludar a tus nuevos compañer@s de aventuras!')
 
-            const channel = client.channels.cache.find(channel => channel.name === DISCORD_CHANNEL_NAME)
+            const channel = client.channels.cache.find(channel => channel.name === _app.DISCORD_CHANNEL_NAME)
 
             const embed = new MessageEmbed()
                 .setTitle('Nuevo miembro, podéis saludarle 👋')
@@ -98,6 +107,8 @@ client.on("message", async message => {
                     });
 
             await channel.send(embed)
+
+            //TODO persist information in DDBB
 
             console.log(`${message.author.tag} finished applying.`)
         } catch (err) {
