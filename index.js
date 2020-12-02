@@ -1,6 +1,7 @@
 'use strict'
 const { QUESTIONS } = require('./constants')
 const { retrieveRolByName } = require('./helpers')
+const { addUser } = require('./controllers/user')
 const { Client, MessageEmbed } = require('discord.js')
 const mongoose = require('mongoose')
 const client = new Client()
@@ -108,7 +109,7 @@ client.on("message", async message => {
 
             await channel.send(embed)
 
-            //TODO persist information in DDBB
+            addUser(message.author.username, message.author.avatarURL(), profile.name, profile.age, profile.location, profile.role, 'N/A')
 
             console.log(`${message.author.tag} finished applying.`)
         } catch (err) {
