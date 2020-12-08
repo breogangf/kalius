@@ -1,6 +1,6 @@
 const User = require('../models/user')
 
-exports.addUser = (username, profileURL, name, age, location, role, sex) => {
+exports.addUser = (username, profileURL, name, age, location, sex, role) => {
 
     var user = new User({
         username,
@@ -8,12 +8,12 @@ exports.addUser = (username, profileURL, name, age, location, role, sex) => {
         name,
         age,
         location,
-        role,
-        sex
+        sex,
+        role
     })
 
     user.save((errorSavingUser, user) => {
-        if (err) {
+        if (errorSavingUser) {
             console.log(`Error saving user in DDBB: ${errorSavingUser}`)
         } else {
             console.log(`User added to DDBB: ${username}`)

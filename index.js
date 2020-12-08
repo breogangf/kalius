@@ -37,6 +37,7 @@ client.on("message", async message => {
                 name: '',
                 age: '',
                 location: '',
+                sex: '',
                 role: '',
             }
 
@@ -55,6 +56,9 @@ client.on("message", async message => {
                                 profile.location = collected.first().content
                                 break
                             case 3:
+                                profile.sex = collected.first().content
+                                break
+                            case 4:
                                 profile.role = collected.first().content
                                 break
                             default:
@@ -103,13 +107,13 @@ client.on("message", async message => {
                 .addFields(
                     {
                         name: "Su perfil:",
-                        value: `* Nombre: ${profile.name}\n * Edad: ${profile.age}\n * Vivo en: ${profile.location}\n * Rol: ${profile.role}\n`,
+                        value: `* Nombre: ${profile.name}\n * Edad: ${profile.age}\n * Vivo en: ${profile.location}\n * Sexo: ${profile.sex}\n * Rol: ${profile.role}\n`,
                         inline: true
                     });
 
             await channel.send(embed)
 
-            addUser(message.author.username, message.author.avatarURL(), profile.name, profile.age, profile.location, profile.role, 'N/A')
+            addUser(message.author.username, message.author.avatarURL(), profile.name, profile.age, profile.location, profile.sex, profile.role)
 
             console.log(`${message.author.tag} finished applying.`)
         } catch (err) {
@@ -126,7 +130,7 @@ client.on('guildMemberAdd', async member => {
 })
 
 client.on('guildMemberRemove', async member => {
-    console.log(`Left the server: ${JSON.stringify(member)}`)
+    console.log(`Left the server: ${member.displayName}`)
     disableUser(member.displayName)
 })
 
