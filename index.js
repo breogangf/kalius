@@ -1,7 +1,7 @@
 'use strict'
 const { QUESTIONS } = require('./constants')
 const { retrieveRolByName } = require('./helpers')
-const { addUser } = require('./controllers/user')
+const { addUser, disableUser } = require('./controllers/user')
 const { Client, MessageEmbed } = require('discord.js')
 const mongoose = require('mongoose')
 const client = new Client()
@@ -11,7 +11,7 @@ const applying = []
 
 const mongodbURL = `mongodb+srv://${mongo.user}:${mongo.password}@${mongo.uri}/${mongo.db}?retryWrites=true&w=majority`
 
-mongoose.connect(mongodbURL, { useNewUrlParser: true, useUnifiedTopology: true }, (err, res) => {
+mongoose.connect(mongodbURL, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }, (err, res) => {
     if (err) throw err
     console.log('Connected to Database: ' + mongo.db)
 })
@@ -47,18 +47,18 @@ client.on("message", async message => {
                         switch (i) {
                             case 0:
                                 profile.name = collected.first().content
-                                break;
+                                break
                             case 1:
                                 profile.age = collected.first().content
-                                break;
+                                break
                             case 2:
                                 profile.location = collected.first().content
-                                break;
+                                break
                             case 3:
                                 profile.role = collected.first().content
-                                break;
+                                break
                             default:
-                                break;
+                                break
                         }
                         if (collected.first().content.toLowerCase() === "!cancelar") {
                             await message.channel.send(":x: **Nos vemos en otra ocasión.**")
@@ -76,7 +76,7 @@ client.on("message", async message => {
             }
 
             //Add role
-            const _role = profile.role.toString().toLowerCase();
+            const _role = profile.role.toString().toLowerCase()
             let welcomeMessage = ':thumbsup: **Bienvenid@!**'
             if (_role.replace('á', 'a') === 'master') {
                 client.guilds.cache.get(_app.GUILD).members.cache.get(message.author.id).roles.add(retrieveRolByName('MASTER'))
@@ -123,6 +123,11 @@ client.on('guildMemberAdd', async member => {
     member.send(`Bienvenido a **La Taberna de Braisgf**, aventurero! Soy Kalius, el observador 👀`)
     member.send(`Contéstame a unas preguntas y te daré a conocer a nuestros miembros!`)
     member.send(`Escribe **!comenzar** cuando estés listo :thumbsup:`)
+})
+
+client.on('guildMemberRemove', async member => {
+    console.log(`Left the server: ${JSON.stringify(member)}`)
+    disableUser(member.displayName)
 })
 
 client.login()

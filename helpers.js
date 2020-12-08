@@ -7,6 +7,6 @@ exports.retrieveRolByName = (rolName) => {
         case 'VILLAGER':
             return '781605717319614484'
         default:
-            break;
+            break
     }
 }

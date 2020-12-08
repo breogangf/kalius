@@ -12,8 +12,21 @@ exports.addUser = (username, profileURL, name, age, location, role, sex) => {
         sex
     })
 
-    user.save((err, data) => {
-        if (err) console.log(`Error saving user in DDBB: ${err}`);
-        console.log(`User added to DDBB: ${username}`)
+    user.save((errorSavingUser, user) => {
+        if (err) {
+            console.log(`Error saving user in DDBB: ${errorSavingUser}`)
+        } else {
+            console.log(`User added to DDBB: ${username}`)
+        }
+    })
+}
+
+exports.disableUser = (username) => {
+    User.findOneAndUpdate({ username }, { active: false, updatedAt: Date.now() }, { new: true }, (errorUpdatingUser, updatedUser) => {
+        if (errorUpdatingUser) {
+            console.error(`Error updating user: ${errorUpdatingUser}`)
+        } else {
+            console.log(`User ${username} disabled in the DDBB succesfull`)
+        }
     })
 }

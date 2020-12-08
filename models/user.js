@@ -7,7 +7,10 @@ const UserSchema = new mongoose.Schema({
     age: String,
     location: String,
     role: String,
-    sex: { type: String, default: 'NA' }
+    sex: { type: String, default: 'N/A' },
+    createdAt: { type: Date, default: Date.now() },
+    updatedAt: { type: Date, default: null },
+    active: { type: Boolean, default: true }
 })
 
 module.exports = mongoose.model('User', UserSchema, 'users')
