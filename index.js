@@ -128,7 +128,7 @@ client.on("message", async message => {
                 .addFields(
                     {
                         name: "Su perfil:",
-                        value: `* Nombre: ${profile.name}\n * Edad: ${profile.age}\n * Vivo en: ${profile.location}\n * Sexo: ${profile.sex}\n * Rol: ${profile.role}\n`,
+                        value: `* Nombre: ${profile.name}\n * Edad: ${profile.age}\n * Vivo en: ${profile.location}\n * Género: ${profile.sex}\n * Rol: ${profile.role}\n`,
                         inline: true
                     });
 
