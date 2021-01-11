@@ -2,6 +2,7 @@
 const { QUESTIONS } = require('./constants')
 const { retrieveRolByName } = require('./helpers')
 const { addUser, disableUser } = require('./controllers/user')
+const { roll } = require('./controllers/dice')
 const { Client, MessageEmbed } = require('discord.js')
 const mongoose = require('mongoose')
 const client = new Client()
@@ -23,6 +24,26 @@ client.on('ready', () => {
 client.on("message", async message => {
 
     if (message.author.bot) return
+
+    if (/(!roll) (\d{1,2})d(\d{1,3})([+,-]\d+)?$/.test(message.content.toString().toLowerCase())) {
+        if (applying.includes(message.author.id)) return
+        console.log('It is a valid roldice!')
+        const rollResultMessage = roll(message.content.toString().toLowerCase())
+        console.log(rollResultMessage)
+
+        const embed = new MessageEmbed()
+            .setTitle('Tirando los dados!')
+            .setAuthor(`@${message.author.username}`, message.author.avatarURL())
+            .setColor(0x00AE86)
+            .addFields(
+                {
+                    name: 'Resultado',
+                    value: rollResultMessage,
+                    inline: true
+                });
+
+        await message.channel.send(embed)
+    }
 
     if (message.content.toString().toLowerCase() === "!comenzar") {
         if (applying.includes(message.author.id)) return
