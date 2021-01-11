@@ -29,7 +29,6 @@ client.on("message", async message => {
         if (applying.includes(message.author.id)) return
         console.log('It is a valid roldice!')
         const rollResultMessage = roll(message.content.toString().toLowerCase())
-        console.log(rollResultMessage)
 
         const embed = new MessageEmbed()
             .setTitle('Tirando los dados!')

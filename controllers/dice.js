@@ -1,5 +1,4 @@
 exports.roll = (command) => {
-    console.log(command)
     const regex = /(!roll) (\d{1,2})d(\d{1,3})([+,-])?(\d+)?$/gm;
     const groups = regex.exec(command)
     const dices = groups[2]
@@ -23,15 +22,15 @@ exports.roll = (command) => {
 
     if (!operation) {
         console.log(`Result: (${message}) = ${result}`)
+        return `(${message}) = ${result}`
     } else {
         if (operation === '+') {
             result = result + modifier
         } else if (operation === '-') {
             result = result - modifier
         }
+        return `(${message}) ${operation}${modifier} = ${result}`
     }
-
-    return `(${message}) ${operation}${modifier} = ${result}`
 }
 
 const randomIntFromInterval = (min, max) => { // min and max included 
